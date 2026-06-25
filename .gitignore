@@ -2,3 +2,7 @@ worktrees/
 *.pyc
 __pycache__/
 .env
+
+# cloned repos for publishing
+data-collector/repo/
+deep-analyzer/repo/
