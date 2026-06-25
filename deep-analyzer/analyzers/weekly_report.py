@@ -5,17 +5,15 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import WEEKLY_SYSTEM_PROMPT
+from config import WEEKLY_SYSTEM_PROMPT, WEEKLY_USER_PROMPT, COMPANY_CONTEXT
 
 
 def generate_weekly_report(llm, all_articles_text: str, date_str: str) -> dict:
-    prompt = f"""Today's date: {date_str}
-
-Here are all collected articles and their analyses from the past week:
-
-{all_articles_text}
-
-Generate a comprehensive weekly report."""
+    prompt = WEEKLY_USER_PROMPT.format(
+        company_context=COMPANY_CONTEXT,
+        date=date_str,
+        all_articles_text=all_articles_text,
+    )
     result = llm.analyze(WEEKLY_SYSTEM_PROMPT, prompt)
     cleaned = result.strip()
     if cleaned.startswith("```"):
@@ -26,4 +24,4 @@ Generate a comprehensive weekly report."""
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        return {"raw": cleaned, "key_findings": []}
+        return {"raw": cleaned, "key_findings": [], "week": date_str}

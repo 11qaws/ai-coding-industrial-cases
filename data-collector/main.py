@@ -11,6 +11,7 @@ from config import (
     SEARCH_QUERIES,
     ANALYSIS_SYSTEM_PROMPT,
     ANALYSIS_USER_PROMPT,
+    COMPANY_CONTEXT,
     LLM_PROVIDER,
     OUTPUT_DIR,
     GITHUB_REPO_URL,
@@ -90,6 +91,7 @@ def main():
         if not content:
             continue
         user_prompt = ANALYSIS_USER_PROMPT.format(
+            company_context=COMPANY_CONTEXT,
             title=item["title"],
             url=item["url"],
             content=content,

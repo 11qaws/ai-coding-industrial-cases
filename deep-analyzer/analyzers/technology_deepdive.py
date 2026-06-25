@@ -4,17 +4,15 @@ import json
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import TECHNOLOGY_DEEPDIVE_SYSTEM_PROMPT
+from config import TECHNOLOGY_DEEPDIVE_SYSTEM_PROMPT, TECHNOLOGY_USER_PROMPT, COMPANY_CONTEXT
 
 
 def analyze_technologies(llm, all_articles_text: str, date_str: str) -> dict:
-    prompt = f"""Today's date: {date_str}
-
-Here are all collected articles and their analyses:
-
-{all_articles_text}
-
-Identify the key technologies mentioned, their adoption patterns, success factors, challenges, and metrics."""
+    prompt = TECHNOLOGY_USER_PROMPT.format(
+        company_context=COMPANY_CONTEXT,
+        date=date_str,
+        all_articles_text=all_articles_text,
+    )
     result = llm.analyze(TECHNOLOGY_DEEPDIVE_SYSTEM_PROMPT, prompt)
     cleaned = result.strip()
     if cleaned.startswith("```"):
@@ -25,4 +23,4 @@ Identify the key technologies mentioned, their adoption patterns, success factor
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        return {"raw": cleaned, "technologies": []}
+        return {"raw": cleaned, "technologies": [], "date": date_str}

@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import (
     LLM_PROVIDER,
     OPENCODE_SERVER_URL,
-GITHUB_REPO_URL,
+    GITHUB_REPO_URL,
     GITHUB_REPO_DIR,
     INSIGHT_OUTPUT_DIR,
     DEEPDIVE_OUTPUT_DIR,
@@ -41,7 +41,7 @@ def main():
 
     print(f"[{today}] Starting deep analysis...")
 
-    publisher = GitPublisher(GITHUB_REPO_SSH, GITHUB_REPO_DIR)
+    publisher = GitPublisher(GITHUB_REPO_URL, GITHUB_REPO_DIR)
     all_text = publisher.read_daily_files()
     if not all_text:
         print("  [WARN] No daily data found in repo. Exiting.")

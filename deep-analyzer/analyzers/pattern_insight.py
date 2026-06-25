@@ -4,17 +4,15 @@ import json
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import PATTERN_SYSTEM_PROMPT
+from config import PATTERN_SYSTEM_PROMPT, PATTERN_USER_PROMPT, COMPANY_CONTEXT
 
 
 def analyze_patterns(llm, all_articles_text: str, date_str: str) -> dict:
-    prompt = f"""Today's date: {date_str}
-
-Here are all collected articles and their analyses:
-
-{all_articles_text}
-
-Identify cross-cutting patterns, recurring themes, emerging trends, and gaps across these case studies."""
+    prompt = PATTERN_USER_PROMPT.format(
+        company_context=COMPANY_CONTEXT,
+        date=date_str,
+        all_articles_text=all_articles_text,
+    )
     result = llm.analyze(PATTERN_SYSTEM_PROMPT, prompt)
     cleaned = result.strip()
     if cleaned.startswith("```"):
@@ -25,4 +23,4 @@ Identify cross-cutting patterns, recurring themes, emerging trends, and gaps acr
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        return {"raw": cleaned, "recurring_themes": []}
+        return {"raw": cleaned, "recurring_themes": [], "date": date_str}
