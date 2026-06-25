@@ -15,7 +15,7 @@ class GitPublisher:
         if os.path.isdir(os.path.join(self.repo_dir, ".git")):
             self.repo = git.Repo(self.repo_dir)
             origin = self.repo.remotes[0]
-            origin.pull()
+            origin.pull(rebase=True)
             return
         if os.path.exists(self.repo_dir):
             shutil.rmtree(self.repo_dir)

@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import config
 from config import (
     SEARCH_QUERIES,
     ANALYSIS_SYSTEM_PROMPT,
@@ -64,9 +65,23 @@ def main():
         print("  [WARN] No results found. Exiting.")
         return
 
-    import random
-    random.shuffle(all_results)
-    all_results = all_results[:30]
+    scored = []
+    for r in all_results:
+        combined = (r.get("title", "") + " " + r.get("snippet", "")).lower()
+        s = 0
+        for kw in config.REQUIRED_KEYWORDS:
+            if kw.lower() in combined:
+                s += 1
+        for kw in config.PRIORITY_KEYWORDS:
+            if kw.lower() in combined:
+                s += 3
+        for kw in config.METRIC_KEYWORDS:
+            if kw.lower() in combined:
+                s += 2
+        s += r.get("score", 0)
+        scored.append((s, r))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    all_results = [r for _, r in scored[:30]]
     print(f"  [3/4] Analyzing {len(all_results)} articles (limited to 30)...")
     analyses = []
     for i, item in enumerate(all_results):

@@ -8,21 +8,25 @@ GITHUB_REPO_DIR = "/home/qumin/discord/data-collector/repo"
 OUTPUT_DIR = "/home/qumin/discord/data-collector/output/daily"
 
 SEARCH_QUERIES = [
-    '"vibe coding" manufacturing industry case study',
-    '"vibe coding" enterprise adoption security',
-    '"AI-assisted programming" industrial control',
-    '"LLM code generation" manufacturing enterprise',
-    '"generative AI" legacy system migration manufacturing',
-    '"AI coding assistant" internal network enterprise security',
-    '"industrial copilot" AI development manufacturing',
-    '"conversational programming" software engineering industry',
-    '"AI pair programmer" enterprise deployment',
-    "\"바이브 코딩\" 제조업 개발 도입",
-    "AI 코딩 도구 제조 현장 보안 내부망 적용 사례",
-    "생성형 AI 레거시 시스템 마이그레이션 제조",
-    "LLM 기반 코딩 생산성 지표 개선 효과",
-    "\"Siemens Industrial Copilot\" manufacturing",
-    "PLC AI programming assistant manufacturing",
+    "AI manufacturing case study productivity improvement percent",
+    "LLM manufacturing quality control defect reduction results",
+    "machine learning production line optimization efficiency gain",
+    "AI predictive maintenance manufacturing cost savings metrics",
+    "deep learning industrial automation throughput increase",
+    "computer vision manufacturing inspection accuracy rate",
+    "AI supply chain manufacturing inventory reduction results",
+    "\"generative AI\" \"manufacturing\" productivity case study",
+    "\"industrial AI\" implementation results production management",
+    "Siemens Azure AI manufacturing digital twin results",
+    "PLC AI programming manufacturing efficiency case study",
+    "\"smart manufacturing\" AI adoption ROI metrics",
+    "제조업 AI 도입 생산성 향상 사례",
+    "AI 스마트팩토리 불량률 개선 효과",
+    "제조 현장 AI 품질관리 도입 성과 지표",
+    "AI 제조공정 최적화 비용 절감 사례",
+    "LLM 제조업 적용 코드 생성 생산성",
+    "AI 생산관리 시스템 도입 효과 측정",
+    "제조 AI 도입 장애물 극복 사례 연구",
 ]
 
 ANALYSIS_SYSTEM_PROMPT = """You are a technical analyst specializing in AI-assisted software development (vibe coding) in the manufacturing industry. Analyze the given article and provide a structured analysis.
@@ -66,3 +70,26 @@ Source: {url}
 
 Content:
 {content}"""
+
+REQUIRED_KEYWORDS = [
+    "ai", "artificial intelligence", "machine learning", "deep learning",
+    "llm", "large language model", "neural network", "computer vision",
+    "natural language processing", "generative ai", "predictive",
+    "automation", "intelligent", "cobot", "autonomous",
+    "인공지능", "AI", "머신러닝", "딥러닝", "자동화",
+]
+
+PRIORITY_KEYWORDS = [
+    "manufacturing", "production", "factory", "industrial", "assembly line",
+    "supply chain", "quality control", "predictive maintenance", "PLC",
+    "manufacturing execution", "MES", "ERP", "SCADA", "IoT",
+    "제조업", "생산", "공장", "스마트팩토리", "품질",
+    "생산관리", "제조", "설비",
+]
+
+METRIC_KEYWORDS = [
+    "%", "percent", "productivity", "efficiency", "improved", "reduced",
+    "increased", "cost saving", "ROI", "throughput", "defect rate",
+    "downtime", "accuracy", "speed", "time",
+    "향상", "개선", "절감", "증가", "감소", "효과", "성과", "%",
+]
