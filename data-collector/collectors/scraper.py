@@ -12,7 +12,10 @@ def fetch_page(url: str, max_chars: int = 8000) -> Optional[str]:
         parsed = urlparse(url)
         if "arxiv.org" in parsed.netloc:
             abs_url = url.replace("/abs/", "/abs/") if "/abs/" in url else url
-            return f"[arXiv paper: {abs_url}]"
+            return f"[arXiv paper abstract available at: {abs_url}]"
+
+        if any(b in parsed.netloc for b in ["openai.com", "chatgpt.com", "perplexity", "zhihu"]):
+            return None
 
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
@@ -25,6 +28,8 @@ def fetch_page(url: str, max_chars: int = 8000) -> Optional[str]:
         text = soup.get_text(separator="\n", strip=True)
         lines = [l for l in text.split("\n") if len(l.strip()) > 40]
         clean = "\n".join(lines)
+        if len(clean) < 100:
+            return None
         return clean[:max_chars] if len(clean) > max_chars else clean
     except Exception as e:
         print(f"  [WARN] Failed to fetch {url}: {e}")

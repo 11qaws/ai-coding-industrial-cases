@@ -8,60 +8,61 @@ GITHUB_REPO_DIR = "/home/qumin/discord/data-collector/repo"
 OUTPUT_DIR = "/home/qumin/discord/data-collector/output/daily"
 
 SEARCH_QUERIES = [
-    "\"vibe coding\" manufacturing industry case study",
-    "\"AI-assisted programming\" industrial application",
-    "\"LLM code generation\" manufacturing enterprise",
-    "generative AI software development legacy system integration",
-    "conversational programming industrial security internal network",
-    "바이브코딩 제조업 개발 사례",
-    "AI 코딩 도구 제조 산업 현장 적용",
-    "생성형 AI 레거시 시스템 마이그레이션",
-    "내부망 AI 개발 도구 보안 적용 사례",
-    "LLM 기반 코딩 생산성 향상 지표",
+    '"vibe coding" manufacturing industry case study',
+    '"vibe coding" enterprise adoption security',
+    '"AI-assisted programming" industrial control',
+    '"LLM code generation" manufacturing enterprise',
+    '"generative AI" legacy system migration manufacturing',
+    '"AI coding assistant" internal network enterprise security',
+    '"industrial copilot" AI development manufacturing',
+    '"conversational programming" software engineering industry',
+    '"AI pair programmer" enterprise deployment',
+    "\"바이브 코딩\" 제조업 개발 도입",
+    "AI 코딩 도구 제조 현장 보안 내부망 적용 사례",
+    "생성형 AI 레거시 시스템 마이그레이션 제조",
+    "LLM 기반 코딩 생산성 지표 개선 효과",
+    "\"Siemens Industrial Copilot\" manufacturing",
+    "PLC AI programming assistant manufacturing",
 ]
 
 ANALYSIS_SYSTEM_PROMPT = """You are a technical analyst specializing in AI-assisted software development (vibe coding) in the manufacturing industry. Analyze the given article and provide a structured analysis.
 
-IMPORTANT: Return ONLY valid JSON. No markdown, no code fences, no explanation.
+ABSOLUTE RULES:
+1. Your ENTIRE response must be ONLY a valid JSON object.
+2. No markdown, no code fences, no explanation, no conversation.
+3. If the article content is insufficient, use "정보 부족" for missing fields.
+4. You MUST include at least 3 key_points even if the content is limited.
+5. If no metrics are available, set metrics to ["구체적 지표 없음"].
 
+RESPONSE FORMAT (JSON only):
 {
-  "title": "기사 제목 (한국어 요약)",
+  "title": "기사 제목을 한국어로 요약 (2-3단어 설명 포함, 20자 이내)",
   "key_points": [
-    "핵심 요점 1 (구체적으로)",
-    "핵심 요점 2",
-    "핵심 요점 3",
-    "핵심 요점 4",
-    "핵심 요점 5"
+    "구체적인 핵심 요점 1",
+    "구체적인 핵심 요점 2",
+    "구체적인 핵심 요점 3",
+    "구체적인 핵심 요점 4",
+    "구체적인 핵심 요점 5"
   ],
   "notable_aspects": [
     "특이점/주목할 점 1",
     "특이점/주목할 점 2",
     "특이점/주목할 점 3"
   ],
-  "core_highlights": "가장 중요한 핵심 포인트 (2-3문장, 구체적이고 강조된 형태)",
+  "core_highlights": "가장 중요한 핵심 포인트를 2-3문장으로 구체적으로 설명",
   "for_engineers": {
-    "implementation_tasks": [
-      "도입에 필요한 작업 1",
-      "도입에 필요한 작업 2"
-    ],
-    "benefits": [
-      "기대 이점 1",
-      "기대 이점 2"
-    ],
-    "metrics": [
-      "구체적 성능/효과 지표 1 (숫자 포함)",
-      "구체적 성능/효과 지표 2 (숫자 포함)"
-    ]
+    "implementation_tasks": ["도입 작업 1", "도입 작업 2"],
+    "benefits": ["이점 1", "이점 2"],
+    "metrics": ["구체적 수치 포함 지표 1", "구체적 수치 포함 지표 2"]
   },
   "tags": ["tag1", "tag2"],
   "relevance": "high|medium|low"
 }"""
 
-ANALYSIS_USER_PROMPT = """Analyze the following article about vibe coding / AI-assisted development in the manufacturing industry:
+ANALYSIS_USER_PROMPT = """Analyze this article:
 
 Title: {title}
 Source: {url}
 
 Content:
-{content}
-"""
+{content}"""

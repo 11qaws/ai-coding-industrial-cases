@@ -12,7 +12,7 @@ from config import (
     ANALYSIS_USER_PROMPT,
     LLM_PROVIDER,
     OUTPUT_DIR,
-GITHUB_REPO_URL,
+    GITHUB_REPO_URL,
     GITHUB_REPO_DIR,
     OPENCODE_SERVER_URL,
 )
@@ -32,6 +32,17 @@ elif LLM_PROVIDER == "anthropic":
     llm = AnthropicLLM()
 else:
     raise ValueError(f"Unknown LLM_PROVIDER: {LLM_PROVIDER}")
+
+RETRY_PROMPT = """The previous response was not valid JSON. Return ONLY a valid JSON object with this exact structure, nothing else:
+{
+  "title": "...",
+  "key_points": ["...", "...", "..."],
+  "notable_aspects": ["...", "...", "..."],
+  "core_highlights": "...",
+  "for_engineers": {"implementation_tasks": ["..."], "benefits": ["..."], "metrics": ["..."]},
+  "tags": ["..."],
+  "relevance": "medium"
+}"""
 
 
 def main():
@@ -53,7 +64,10 @@ def main():
         print("  [WARN] No results found. Exiting.")
         return
 
-    print(f"  [3/4] Analyzing {len(all_results)} articles...")
+    import random
+    random.shuffle(all_results)
+    all_results = all_results[:30]
+    print(f"  [3/4] Analyzing {len(all_results)} articles (limited to 30)...")
     analyses = []
     for i, item in enumerate(all_results):
         print(f"    [{i+1}/{len(all_results)}] {item['title'][:60]}...")
@@ -85,7 +99,7 @@ def main():
     print("  Publishing to GitHub...")
     try:
         from git_publisher import GitPublisher
-        publisher = GitPublisher(GITHUB_REPO_SSH, GITHUB_REPO_DIR)
+        publisher = GitPublisher(GITHUB_REPO_URL, GITHUB_REPO_DIR)
         publisher.publish(OUTPUT_DIR, "daily", f"daily: {today} - {len(analyses)} articles")
     except Exception as e:
         print(f"  [ERROR] GitHub publish failed: {e}")
@@ -104,7 +118,7 @@ def _parse_result(result: str) -> dict:
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        return {"raw": cleaned, "key_points": [cleaned]}
+        return {"raw": cleaned, "key_points": ["파싱 실패: LLM이 올바른 JSON을 반환하지 않음"], "relevance": "low"}
 
 
 if __name__ == "__main__":

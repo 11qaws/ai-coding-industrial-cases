@@ -17,10 +17,9 @@ class OpencodeLLM(LLM):
         session_id = ses.json()["id"]
         try:
             body = {
-                "model": None,
-                "noReply": True,
+                "system": system_prompt,
                 "parts": [
-                    {"type": "text", "text": f"{system_prompt}\n\n{user_content}"}
+                    {"type": "text", "text": user_content}
                 ],
             }
             resp = requests.post(
@@ -30,10 +29,11 @@ class OpencodeLLM(LLM):
             )
             resp.raise_for_status()
             data = resp.json()
+            text_parts = []
             for part in data.get("parts", []):
                 if part.get("type") == "text":
-                    return part.get("text", "")
-            return json.dumps(data.get("parts", []))
+                    text_parts.append(part.get("text", ""))
+            return "\n".join(text_parts) if text_parts else json.dumps(data.get("parts", []))
         finally:
             try:
                 requests.delete(f"{self.server_url}/session/{session_id}")
